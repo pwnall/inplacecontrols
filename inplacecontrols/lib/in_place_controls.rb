@@ -1,11 +1,12 @@
 require 'action_view'
+require 'custom_helpers'
 require 'action_view/helpers/tag_helper'
 require 'action_view/helpers/form_helper'
 require 'action_view/helpers/javascript_helper'
 # InPlaceControls - Do in-place-style editors with other form controls
 module DJDossiers
   module InPlaceControls
-
+		include	CustomHelpers
     # These controls were designed to be used with belongs_to associations.  Just use the 
     # object and the foreign key as the attribute.  You can specify a chain of methods to 
     # use for the final display text (so you dont see the foreign key id)
@@ -40,7 +41,7 @@ module DJDossiers
           id_string = "#{object}_#{attribute}_#{@item.id }"
           field_id = "#{object}_#{attribute}"
           if @item.update_attributes(attribute => params[object][attribute])
-            highlight_endcolor = options[:highlight_endcolor] || "'#666666'"
+            highlight_endcolor = options[:highlight_endcolor] || "'#ffffff'"
             highlight_startcolor = options[:highlight_startcolor] || "'#ffff99'"
             unless options[:final_text].nil?
               methods = options[:final_text]
@@ -198,7 +199,7 @@ module DJDossiers
         retval << submit_tag( "OK", :class => "inplace_submit")
         retval << link_to_function( "Cancel", "$('#{id_string}_form').hide();$('#{id_string}').show() ", {:class => "inplace_cancel" })
         retval << "</span>"
-        retval << invisible_loader( "Updating", "loader_#{id_string}", "inplace_loader", "white")
+        retval << invisible_loader( "Updating", "loader_#{id_string}", "inplace_loader")
         retval << end_form_tag
       end
 
@@ -261,7 +262,6 @@ end
 # Hook code
 ActionController::Base.class_eval do #:nodoc:
   extend DJDossiers::InPlaceControls::ControllerMethods
-
 end
 
 ActionView::Base.class_eval do #:nodoc:
