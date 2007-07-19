@@ -1,8 +1,20 @@
 module CustomHelpers
+
 	class Object
 		def proper_case
 			self.to_s.humanize.split(/\s/).map { |e| e.capitalize }.join(" ")
 		end
+	end
+
+	def invisible_loader(message = nil, div_id = "loader", class_name = "loader", color = "regular")
+		ret = ""
+		ret << "<div id=\"#{div_id}\" style=\"display:none\" class=\"#{class_name}\">"
+		ret << image_tag("spinner.gif") if color == "regular"
+		ret << image_tag("spinner_white.gif") if color == "white"
+		ret << image_tag("spinner_update_list.gif") if color == "update_list"
+
+		ret << "&nbsp;&nbsp;<span>#{message.to_s}</span>"
+		ret << "</div>"
 	end
 
 	def text_field_with_label(object_name, method, options = {})

@@ -56,7 +56,7 @@ module DJDossiers
             render :update do |page|
               page.replace_html "#{id_string}", final_text
               page.hide "#{id_string}_form"
-              page.hide "error_messages"
+              page.hide "error_messages" if options[:error_messages]
               page.show "#{id_string}"
               page.select("##{id_string}_form ##{field_id}").map { |e| e.remove_class_name "fieldWithError" }
               page[:error_messages].remove_class_name "full_errors"
@@ -65,12 +65,13 @@ module DJDossiers
           else
 						#raise @item.inspect
             render :update do |page|
+						
               page.select("##{id_string}_form ##{field_id}").map { |e| e.add_class_name "fieldWithError" }
               page[:error_messages].add_class_name "full_errors"
               page.replace_html :error_messages, "<h2>Errors:</h2><ul>#{@item.errors.full_messages.map { |e| "<li>#{e}</li>" }.join("\n  ")}</ul>" unless options[:error_messages]
               page.visual_effect :appear, :error_messages
               
-            end
+            end if options[:error_messages]
             
           end
         end
