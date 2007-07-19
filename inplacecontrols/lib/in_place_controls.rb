@@ -56,10 +56,12 @@ module DJDossiers
             render :update do |page|
               page.replace_html "#{id_string}", final_text
               page.hide "#{id_string}_form"
-              page.hide "error_messages" if options[:error_messages]
+              unless options[:error_messages].nil?
+								page.hide "error_messages" 
+								page.select("##{id_string}_form ##{field_id}").map { |e| e.remove_class_name "fieldWithError" }
+								page[:error_messages].remove_class_name "full_errors"  unless options[:error_messages].nil?
+							end
               page.show "#{id_string}"
-              page.select("##{id_string}_form ##{field_id}").map { |e| e.remove_class_name "fieldWithError" }
-              page[:error_messages].remove_class_name "full_errors"
               page.visual_effect :highlight, "#{id_string}", :duration => 0.5, :endcolor => highlight_endcolor, :startcolor => highlight_startcolor
             end
           else
@@ -71,7 +73,7 @@ module DJDossiers
               page.replace_html :error_messages, "<h2>Errors:</h2><ul>#{@item.errors.full_messages.map { |e| "<li>#{e}</li>" }.join("\n  ")}</ul>" unless options[:error_messages]
               page.visual_effect :appear, :error_messages
               
-            end if options[:error_messages]
+            end unless options[:error_messages].nil?
             
           end
         end

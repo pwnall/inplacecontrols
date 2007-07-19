@@ -1,9 +1,14 @@
+class Object
+	def proper_case
+		self.to_s.humanize.split(/\s/).map { |e| e.capitalize }.join(" ")
+	end
+end
 module CustomHelpers
 
-	class Object
-		def proper_case
-			self.to_s.humanize.split(/\s/).map { |e| e.capitalize }.join(" ")
-		end
+
+	
+	def inplace_error_div
+		content_tag(:div, "", :id => "error_messages")
 	end
 
 	def invisible_loader(message = nil, div_id = "loader", class_name = "loader", color = "regular")
